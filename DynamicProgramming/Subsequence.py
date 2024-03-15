@@ -1,43 +1,32 @@
-s1 = 'ABACABB'
-s2 = 'ABACCABABBAB'
-s3 ='f'
+S1 = 'ABCDEF'
+S2 = 'ABACADE'
 
-def longest_substring(s1, s2):
-  data = [[None for n in s2] for i in s1]
-  return lcsl(s1, s2, data)
-  
+def longest_common_substring(s1, s2):
+  table = [[None for n in range(len(s2)+1)]for i in range(len(s1)+1)]
+  print(lcs(s1, s2, table))
 
-def lcsl(s1, s2, data):
-  if 0 in [len(s1), len(s2)]:
-    print('state')
+def lcs(s1, s2, table):
+  if 0 in [len(s1), len(s2)]: # padding 0s
+    table[len(s1)][len(s2)] = 0
     return 0
 
-  if len(s1) == 1:
-    res = int(s1[0] in s2)
-    data[len(s1)][len(s2)] = res
-    return int(s1[0] in s2)
-  if len(s2) == 1:
-    res = int(s2[0] in s1)
-    data[len(s2)][len(s1)] = res
-    return res
-  
-  if data[len(s1)-1][len(s2)-1]:
-    return data[len(s1)-1][len(s2)-1]
-  
-  if s1[len(s1)-2] == s2[len(s2) -2]:
-    res = lcsl(s1[0:len(s1)-2], s2[0:len(s2)-2], data) + 1
-    data[len(s1)-1][len(s2)-1] = res
-    return res
-  
-  a = lcsl(s1[0:len(s1)], s2[0:len(s2)-1], data)
-  b = lcsl(s1[0:len(s1)-1], s2[0:len(s2)], data)
+  if table[len(s1)][len(s2)]:
+    return table[len(s1)][len(s2)]
 
-  if a > b:
-    data[len(s1)-1][len(s2)-1] = a
-    return a
-  data[len(s1)-1][len(s2)-1] = b
-  return b
+  if s1[-1] == s2[-1]: # if equal, add one
+    ans = lcs(s1[:-1], s2[:-1], table) + 1
+    table[len(s1)][len(s2)] = ans
+    return ans
   
+  left = lcs(s1, s2[:-1], table)
+  up = lcs (s1[:-1], s2, table)
+  diag = lcs(s1[:-1], s2[:-1], table)
 
-print(longest_substring(s1, s2))
+  m = max(left, up, diag)
+  table[len(s1)][len(s2)] = m 
+  return m
 
+
+longest_common_substring(S1, S2)
+print(len(S1))
+print(len(S2))

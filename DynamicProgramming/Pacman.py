@@ -7,8 +7,6 @@ def pacman(grid):
   return x
 
 def p(i, j, grid, table):
-  if i == 3 and j == 3:
-    print('jig')
   n = len(grid)
   if n - i < 2 and n - j < 2:
     base_case(grid, table, n)
